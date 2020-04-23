@@ -98,10 +98,10 @@ int main() {
   Test1GBPageMapping(1ULL << 30, 1ULL << 31);
   Test2MBPageMapping();
   Test4KBPageMapping();
-  TestRangeMapping(pml4, 0x00000000'00003000ULL, 0x00000000'12347000ULL,
+  TestRangeMapping(pml4, 0x0000000000003000ULL, 0x0000000012347000ULL,
                    4ULL * 1024 * 1024 * 1024);
-  TestRangeMapping(pml4, 0xFFFFFFFF'FFE00000ULL, 0x00000000'FFE00000ULL,
-                   0x00000000'00200000ULL);
+  TestRangeMapping(pml4, 0xFFFFFFFFFFE00000ULL, 0x00000000FFE00000ULL,
+                   0x0000000000200000ULL);
   puts("PASS");
   return 0;
 }

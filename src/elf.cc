@@ -261,7 +261,7 @@ void LoadKernelELF(EFIFile& file) {
       ByteSizeToPageSize(map_info.data.GetMapSize())));
 
   constexpr uint64_t kNumOfKernelMainStackPages = 4;
-  uint64_t kernel_main_stack_virtual_base = 0xFFFFFFFF'40000000ULL;
+  uint64_t kernel_main_stack_virtual_base = 0xFFFFFFFF40000000ULL;
 
   map_info.stack.Set(
       kernel_main_stack_virtual_base,
@@ -269,7 +269,7 @@ void LoadKernelELF(EFIFile& file) {
       kNumOfKernelMainStackPages << kPageSizeExponent);
 
   constexpr uint64_t kNumOfKernelHeapPages = 4;
-  uint64_t kernel_heap_virtual_base = 0xFFFFFFFF'50000000ULL;
+  uint64_t kernel_heap_virtual_base = 0xFFFFFFFF50000000ULL;
 
   map_info.heap.Set(
       kernel_heap_virtual_base,

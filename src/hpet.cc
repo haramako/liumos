@@ -68,7 +68,7 @@ uint64_t HPET::ReadMainCounterValue() {
 }
 
 void HPET::BusyWait(uint64_t ms) {
-  uint64_t count = 1000'000000'000ULL * ms / femtosecond_per_count_ +
+  uint64_t count = 1000000000'000ULL * ms / femtosecond_per_count_ +
                    ReadMainCounterValue();
   while (ReadMainCounterValue() < count)
     Sleep();

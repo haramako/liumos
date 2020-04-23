@@ -27,7 +27,7 @@ APPS=app/hello/hello.bin app/pi/pi.bin
 ifdef SSH_CONNECTION
 QEMU_ARGS+= -vnc :5,password
 endif
-	
+
 src/BOOTX64.EFI : .FORCE
 	make -C src
 
@@ -63,9 +63,9 @@ LLDB_ARGS = -o 'settings set interpreter.prompt-on-quit false' \
 
 run_xhci_gdb : files .FORCE
 	lldb $(LLDB_ARGS) -- $(QEMU) $(QEMU_ARGS_XHCI) $(QEMU_ARGS)
-	
+
 run :
-	$(QEMU) $(QEMU_ARGS_PMEM) || reset
+	$(QEMU) $(QEMU_ARGS_PMEM)
 
 run_gdb : files pmem.img .FORCE
 	$(QEMU) $(QEMU_ARGS_PMEM) -gdb tcp::1192 -S || reset

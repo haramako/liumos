@@ -399,7 +399,7 @@ void TestMem(PhysicalPageAllocator* allocator, uint32_t proximity_domain) {
   PutString("\n");
 
   int32_t* test_mem_map_addr =
-      reinterpret_cast<int32_t*>(0xFFFFFFFE'00000000ULL);
+      reinterpret_cast<int32_t*>(0xFFFFFFFE00000000ULL);
 
   CreatePageMapping(*liumos->dram_allocator, GetKernelPML4(),
                     reinterpret_cast<uint64_t>(test_mem_map_addr),
@@ -497,7 +497,7 @@ void TestMemWrite(PhysicalPageAllocator* allocator, uint32_t proximity_domain) {
   PutString("\n");
 
   volatile int32_t* test_mem_map_addr =
-      reinterpret_cast<volatile int32_t*>(0xFFFFFFFE'00000000ULL);
+      reinterpret_cast<volatile int32_t*>(0xFFFFFFFE00000000ULL);
 
   CreatePageMapping(*liumos->dram_allocator, GetKernelPML4(),
                     reinterpret_cast<uint64_t>(test_mem_map_addr),
@@ -773,7 +773,7 @@ void Run(TextBox& tbox) {
   } else if (IsEqualString(line, "testscroll")) {
     uint64_t t0 = liumos->hpet->ReadMainCounterValue();
     uint64_t t1 =
-        t0 + 3 * 1000000'000000'000 / liumos->hpet->GetFemtosecondPerCount();
+        t0 + 3 * 1000000000000'000 / liumos->hpet->GetFemtosecondPerCount();
     for (int i = 0; liumos->hpet->ReadMainCounterValue() < t1; i++) {
       PutStringAndHex("Line", i + 1);
     }
