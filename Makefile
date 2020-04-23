@@ -3,7 +3,7 @@ default: src/BOOTX64.EFI
 include common.mk
 
 OVMF=ovmf/bios64.bin
-QEMU=qemu-system-x86_64
+QEMU="C:\Program Files\qemu\qemu-system-x86_64"
 QEMU_ARGS=\
 					 -bios $(OVMF) \
 					 -machine q35,nvdimm -cpu qemu64 -smp 4 \
@@ -17,9 +17,8 @@ QEMU_ARGS=\
 
 
 QEMU_ARGS_PMEM=\
-					 $(QEMU_ARGS) \
-					 -object memory-backend-file,id=mem1,share=on,mem-path=pmem.img,size=2G \
-					 -device nvdimm,id=nvdimm1,memdev=mem1
+					 $(QEMU_ARGS) 
+
 VNC_PASSWORD=a
 PORT_MONITOR=1240
 
@@ -65,7 +64,7 @@ LLDB_ARGS = -o 'settings set interpreter.prompt-on-quit false' \
 run_xhci_gdb : files .FORCE
 	lldb $(LLDB_ARGS) -- $(QEMU) $(QEMU_ARGS_XHCI) $(QEMU_ARGS)
 	
-run : files pmem.img .FORCE
+run :
 	$(QEMU) $(QEMU_ARGS_PMEM) || reset
 
 run_gdb : files pmem.img .FORCE

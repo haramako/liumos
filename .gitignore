@@ -8,3 +8,7 @@ mnt/
 *.vdi
 *.txt
 cc_cache.gen.mk
+
+GPATH
+GRTAGS
+GTAGS
