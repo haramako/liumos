@@ -22,7 +22,7 @@ uint64_t Scheduler::LaunchAndWaitUntilExit(Process& proc) {
   PutStringAndDecimalWithPointPos("  realtime           (sec)", real_femto_sec,
                                   15);
   proc.PrintStatistics();
-  return real_femto_sec / 1000'000;
+  return real_femto_sec / 1000000;
 }
 
 Process* Scheduler::SwitchProcess() {

@@ -172,7 +172,7 @@ Process& LoadELFAndCreateEphemeralProcess(EFIFile& file) {
 
   const int kNumOfStackPages = 32;
   map_info.stack.Set(
-      0xBEEF'0000,
+      0xBEEF0000,
       liumos->dram_allocator->AllocPages<uint64_t>(kNumOfStackPages),
       kNumOfStackPages << kPageSizeExponent);
 
@@ -200,7 +200,7 @@ Process& LoadELFAndCreateEphemeralProcess(EFIFile& file) {
 
 Process& LoadELFAndCreatePersistentProcess(EFIFile& file,
                                            PersistentMemoryManager& pmem) {
-  constexpr uint64_t kUserStackBaseAddr = 0xBEEF'0000;
+  constexpr uint64_t kUserStackBaseAddr = 0xBEEF0000;
   const int kNumOfStackPages = 32;
   PersistentProcessInfo& pp_info = *pmem.AllocPersistentProcessInfo();
   pp_info.Init();
@@ -261,7 +261,7 @@ void LoadKernelELF(EFIFile& file) {
       ByteSizeToPageSize(map_info.data.GetMapSize())));
 
   constexpr uint64_t kNumOfKernelMainStackPages = 4;
-  uint64_t kernel_main_stack_virtual_base = 0xFFFF'FFFF'4000'0000ULL;
+  uint64_t kernel_main_stack_virtual_base = 0xFFFFFFFF'40000000ULL;
 
   map_info.stack.Set(
       kernel_main_stack_virtual_base,
@@ -269,7 +269,7 @@ void LoadKernelELF(EFIFile& file) {
       kNumOfKernelMainStackPages << kPageSizeExponent);
 
   constexpr uint64_t kNumOfKernelHeapPages = 4;
-  uint64_t kernel_heap_virtual_base = 0xFFFF'FFFF'5000'0000ULL;
+  uint64_t kernel_heap_virtual_base = 0xFFFFFFFF'50000000ULL;
 
   map_info.heap.Set(
       kernel_heap_virtual_base,

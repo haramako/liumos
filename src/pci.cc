@@ -11,22 +11,22 @@ constexpr uint16_t kIOAddrPCIConfigData = 0x0CFC;
 PCI* PCI::pci_;
 
 static const std::unordered_multimap<uint32_t, const char*> device_infos = {
-    {0x000D'1B36, "QEMU XHCI Host Controller"},
-    {0x2918'8086, "82801IB (ICH9) LPC Interface Controller"},
-    {0x29c0'8086, "82G33/G31/P35/P31 Express DRAM Controller"},
-    {0x31A8'8086, "Intel XHCI Controller"},
-    {0x1111'1234, "QEMU Virtual Video Controller"},
-    {0x8168'10ec, "RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller"},
+    {0x000D1B36, "QEMU XHCI Host Controller"},
+    {0x29188086, "82801IB (ICH9) LPC Interface Controller"},
+    {0x29c08086, "82G33/G31/P35/P31 Express DRAM Controller"},
+    {0x31A88086, "Intel XHCI Controller"},
+    {0x11111234, "QEMU Virtual Video Controller"},
+    {0x816810ec, "RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller"},
 };
 
 static void SelectRegister(uint32_t bus,
                            uint32_t device,
                            uint32_t func,
                            uint32_t reg) {
-  assert((bus & ~0b1111'1111) == 0);
-  assert((device & ~0b1'1111) == 0);
+  assert((bus & ~0b11111111) == 0);
+  assert((device & ~0b11111) == 0);
   assert((func & ~0b111) == 0);
-  assert((reg & ~0b1111'1100) == 0);
+  assert((reg & ~0b11111100) == 0);
   WriteIOPort32(kIOAddrPCIConfigAddr,
                 (1 << 31) | (bus << 16) | (device << 11) | (func << 8) | reg);
 }
@@ -49,7 +49,7 @@ void PCI::WriteConfigRegister32(uint32_t bus,
 }
 
 bool PCI::DetectDevice(int bus, int device, int func) {
-  constexpr uint32_t kPCIInvalidVendorID = 0xffff'ffff;
+  constexpr uint32_t kPCIInvalidVendorID = 0xffffffff;
   uint32_t id = ReadConfigRegister32(bus, device, func, 0);
   if (id == kPCIInvalidVendorID)
     return false;

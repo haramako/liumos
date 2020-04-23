@@ -153,7 +153,7 @@ void ShowNFIT() {
             reinterpret_cast<NFIT::PlatformCapabilities*>(&it);
         const int cap_shift = 31 - caps->highest_valid_cap_bit;
         const uint32_t cap_bits =
-            ((caps->capabilities << cap_shift) & 0xFFFF'FFFFUL) >> cap_shift;
+            ((caps->capabilities << cap_shift) & 0xFFFFFFFFUL) >> cap_shift;
         PutString("Platform Capabilities\n");
         PutStringAndBool("  Flush CPU Cache when power loss", cap_bits & 0b001);
         PutStringAndBool("  Flush Memory Controller when power loss",
@@ -399,7 +399,7 @@ void TestMem(PhysicalPageAllocator* allocator, uint32_t proximity_domain) {
   PutString("\n");
 
   int32_t* test_mem_map_addr =
-      reinterpret_cast<int32_t*>(0xFFFF'FFFE'0000'0000ULL);
+      reinterpret_cast<int32_t*>(0xFFFFFFFE'00000000ULL);
 
   CreatePageMapping(*liumos->dram_allocator, GetKernelPML4(),
                     reinterpret_cast<uint64_t>(test_mem_map_addr),
@@ -497,7 +497,7 @@ void TestMemWrite(PhysicalPageAllocator* allocator, uint32_t proximity_domain) {
   PutString("\n");
 
   volatile int32_t* test_mem_map_addr =
-      reinterpret_cast<volatile int32_t*>(0xFFFF'FFFE'0000'0000ULL);
+      reinterpret_cast<volatile int32_t*>(0xFFFFFFFE'00000000ULL);
 
   CreatePageMapping(*liumos->dram_allocator, GetKernelPML4(),
                     reinterpret_cast<uint64_t>(test_mem_map_addr),
@@ -773,7 +773,7 @@ void Run(TextBox& tbox) {
   } else if (IsEqualString(line, "testscroll")) {
     uint64_t t0 = liumos->hpet->ReadMainCounterValue();
     uint64_t t1 =
-        t0 + 3 * 1000'000'000'000'000 / liumos->hpet->GetFemtosecondPerCount();
+        t0 + 3 * 1000000'000000'000 / liumos->hpet->GetFemtosecondPerCount();
     for (int i = 0; liumos->hpet->ReadMainCounterValue() < t1; i++) {
       PutStringAndHex("Line", i + 1);
     }

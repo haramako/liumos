@@ -91,7 +91,7 @@ void Controller::InitPrimaryInterrupter() {
 
 void Controller::InitSlotsAndContexts() {
   num_of_slots_enabled_ = max_slots_;
-  constexpr uint64_t kOPREGConfigMaskMaxSlotsEn = 0b1111'1111;
+  constexpr uint64_t kOPREGConfigMaskMaxSlotsEn = 0b11111111;
   op_regs_->config = (op_regs_->config & ~kOPREGConfigMaskMaxSlotsEn) |
                      (num_of_slots_enabled_ & kOPREGConfigMaskMaxSlotsEn);
 
@@ -110,8 +110,8 @@ void Controller::InitCommandRing() {
   cmd_ring_phys_addr_ = v2p(cmd_ring_);
   cmd_ring_->Init(cmd_ring_phys_addr_);
 
-  constexpr uint64_t kOPREGCRCRMaskRsvdP = 0b11'0000;
-  constexpr uint64_t kOPREGCRCRMaskRingPtr = ~0b11'1111ULL;
+  constexpr uint64_t kOPREGCRCRMaskRsvdP = 0b110000;
+  constexpr uint64_t kOPREGCRCRMaskRingPtr = ~0b111111ULL;
   volatile uint64_t& crcr = op_regs_->cmd_ring_ctrl;
   crcr = (crcr & kOPREGCRCRMaskRsvdP) |
          (cmd_ring_phys_addr_ & kOPREGCRCRMaskRingPtr) | 1;
@@ -138,7 +138,7 @@ void Controller::WritePORTSC(int slot, uint32_t data) {
 
 static std::optional<PCI::DeviceLocation> FindXHCIController() {
   for (auto& it : PCI::GetInstance().GetDeviceList()) {
-    if (it.first != 0x000D'1B36 && it.first != 0x31A8'8086)
+    if (it.first != 0x000D1B36 && it.first != 0x31A88086)
       continue;
     PutString("XHCI Controller Found: ");
     PutString(PCI::GetDeviceName(it.first));

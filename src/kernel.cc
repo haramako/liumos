@@ -57,7 +57,7 @@ void InitPMEMManagement() {
 }
 
 void InitializeVRAMForKernel() {
-  constexpr uint64_t kernel_virtual_vram_base = 0xFFFF'FFFF'8000'0000ULL;
+  constexpr uint64_t kernel_virtual_vram_base = 0xFFFFFFFF'80000000ULL;
   const int xsize = liumos->vram_sheet->GetXSize();
   const int ysize = liumos->vram_sheet->GetYSize();
   const int ppsl = liumos->vram_sheet->GetPixelsPerScanLine();
@@ -68,7 +68,7 @@ void InitializeVRAMForKernel() {
   virtual_vram_.Init(reinterpret_cast<uint32_t*>(kernel_virtual_vram_base),
                      xsize, ysize, ppsl);
 
-  constexpr uint64_t kernel_virtual_screen_base = 0xFFFF'FFFF'8800'0000ULL;
+  constexpr uint64_t kernel_virtual_screen_base = 0xFFFFFFFF'88000000ULL;
   CreatePageMapping(
       *liumos->dram_allocator, GetKernelPML4(), kernel_virtual_screen_base,
       reinterpret_cast<uint64_t>(liumos->screen_sheet->GetBuf()),
@@ -209,7 +209,7 @@ extern "C" void KernelEntry(LiumOS* liumos_passed) {
   root_context.SetRegisters(nullptr, 0, nullptr, 0, ReadCR3(), 0, 0);
   ProcessMappingInfo& map_info = root_context.GetProcessMappingInfo();
   constexpr uint64_t kNumOfKernelHeapPages = 4;
-  uint64_t kernel_heap_virtual_base = 0xFFFF'FFFF'5000'0000ULL;
+  uint64_t kernel_heap_virtual_base = 0xFFFFFFFF'50000000ULL;
   map_info.heap.Set(
       kernel_heap_virtual_base,
       liumos->dram_allocator->AllocPages<uint64_t>(kNumOfKernelHeapPages),
@@ -243,7 +243,7 @@ extern "C" void KernelEntry(LiumOS* liumos_passed) {
   constexpr uint64_t kNumOfKernelStackPages = 128;
   uint64_t kernel_stack_physical_base =
       liumos->dram_allocator->AllocPages<uint64_t>(kNumOfKernelStackPages);
-  uint64_t kernel_stack_virtual_base = 0xFFFF'FFFF'2000'0000ULL;
+  uint64_t kernel_stack_virtual_base = 0xFFFFFFFF'20000000ULL;
   CreatePageMapping(*liumos->dram_allocator, GetKernelPML4(),
                     kernel_stack_virtual_base, kernel_stack_physical_base,
                     kNumOfKernelStackPages << kPageSizeExponent,

@@ -63,7 +63,7 @@ void IdentifyCPU() {
   ReadCPUID(&cpuid, 0, 0);
   f.max_cpuid = cpuid.eax;
 
-  ReadCPUID(&cpuid, 0x8000'0000, 0);
+  ReadCPUID(&cpuid, 0x80000000, 0);
   f.max_extended_cpuid = cpuid.eax;
 
   ReadCPUID(&cpuid, 1, 0);
@@ -82,9 +82,9 @@ void IdentifyCPU() {
     f.clflushopt = cpuid.ebx & (1 << 23);
   }
 
-  if (0x8000'0004 <= f.max_extended_cpuid) {
+  if (0x80000004 <= f.max_extended_cpuid) {
     for (int i = 0; i < 3; i++) {
-      ReadCPUID(&cpuid, 0x8000'0002 + i, 0);
+      ReadCPUID(&cpuid, 0x80000002 + i, 0);
       *reinterpret_cast<uint32_t*>(&cpu_features.brand_string[i * 16 + 0]) =
           cpuid.eax;
       *reinterpret_cast<uint32_t*>(&cpu_features.brand_string[i * 16 + 4]) =

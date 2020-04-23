@@ -116,7 +116,7 @@ void InitPaging() {
   // Even if 4-level paging is supported,
   // whether 1GB pages are supported or not is determined by
   // CPUID.80000001H:EDX.Page1GB [bit 26] = 1.
-  uint64_t direct_mapping_end = 0xffff'ffffULL;
+  uint64_t direct_mapping_end = 0xffffffffULL;
   EFI::MemoryMap& map = *liumos->efi_memory_map;
   for (int i = 0; i < map.GetNumberOfEntries(); i++) {
     const EFI::MemoryDescriptor* desc = map.GetDescriptor(i);
