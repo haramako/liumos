@@ -16,8 +16,8 @@ class EFI {
     // Appendix D - Status Codes
     // p.2212-
     kSuccess = 0x0,
-    kBufferTooSmall = 0x8000'0000'0000'0005,
-    kNotFound = 0x8000'0000'0000'000E,
+    kBufferTooSmall = 0x8000000000000005,
+    kNotFound = 0x800000000000000E,
   };
 
   typedef enum {

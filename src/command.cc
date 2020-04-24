@@ -773,7 +773,7 @@ void Run(TextBox& tbox) {
   } else if (IsEqualString(line, "testscroll")) {
     uint64_t t0 = liumos->hpet->ReadMainCounterValue();
     uint64_t t1 =
-        t0 + 3 * 1000000000000'000 / liumos->hpet->GetFemtosecondPerCount();
+        t0 + 3 * 1000000000000000 / liumos->hpet->GetFemtosecondPerCount();
     for (int i = 0; liumos->hpet->ReadMainCounterValue() < t1; i++) {
       PutStringAndHex("Line", i + 1);
     }

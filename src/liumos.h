@@ -25,11 +25,11 @@
 #include "sys_constant.h"
 #include "text_box.h"
 
-constexpr uint64_t kLAPICRegisterAreaPhysBase = 0x0000'0000'FEE0'0000ULL;
-constexpr uint64_t kLAPICRegisterAreaVirtBase = 0xFFFF'FFFF'FEE0'0000ULL;
-constexpr uint64_t kLAPICRegisterAreaByteSize = 0x0000'0000'0010'0000ULL;
+constexpr uint64_t kLAPICRegisterAreaPhysBase = 0x00000000FEE00000ULL;
+constexpr uint64_t kLAPICRegisterAreaVirtBase = 0xFFFFFFFFFEE00000ULL;
+constexpr uint64_t kLAPICRegisterAreaByteSize = 0x0000000000100000ULL;
 
-constexpr uint64_t kKernelBaseAddr = 0xFFFF'FFFF'0000'0000ULL;
+constexpr uint64_t kKernelBaseAddr = 0xFFFFFFFF00000000ULL;
 
 constexpr uint64_t kKernelStackPagesForEachProcess = 2;
 

@@ -35,8 +35,8 @@ class KernelVirtualHeapAllocator {
   }
 
  private:
-  static constexpr uint64_t kKernelHeapBaseAddr = 0xFFFF'FFFF'9000'0000;
-  static constexpr uint64_t kKernelHeapSize = 0x0000'0000'4000'0000;
+  static constexpr uint64_t kKernelHeapBaseAddr = 0xFFFFFFFF90000000;
+  static constexpr uint64_t kKernelHeapSize = 0x0000000040000000;
   uint64_t next_base_;
   IA_PML4& pml4_;
   PhysicalPageAllocator& dram_allocator_;

@@ -6,7 +6,7 @@ extern "C" {
 
 namespace CPUIDIndex {
 constexpr uint32_t kXTopology = 0x0B;
-constexpr uint32_t kMaxAddr = 0x8000'0008;
+constexpr uint32_t kMaxAddr = 0x80000008;
 }  // namespace CPUIDIndex
 
 constexpr uint32_t kCPUID01H_EDXBitAPIC = (1 << 9);
@@ -163,7 +163,7 @@ enum class MSRIndex : uint32_t {
   kSTAR = 0xC0000081,
   kLSTAR = 0xC0000082,
   kFMASK = 0xC0000084,
-  kFSBase = 0xC000'0100,
+  kFSBase = 0xC0000100,
   kKernelGSBase = 0xC0000102,
 };
 

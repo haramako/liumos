@@ -15,7 +15,7 @@
 #endif
 
 constexpr uint64_t kAddrCannotTranslate =
-    0x8000'0000'0000'0000;  // non-canonical address
+    0x8000000000000000;  // non-canonical address
 
 constexpr uint64_t kPageAttrMask = 0b11111;
 constexpr uint64_t kPageAttrPresent = 0b00001;
