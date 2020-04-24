@@ -37,8 +37,8 @@ CLANG_WARNINGS = \
 C_STD = -std=c11
 CXX_STD = -std=c++17
 
-LIBCXX_FOR_KERNEL_INC_PATH=third_party_root/include/c++/v1
-LIBCXX_FOR_KERNEL_LIB_PATH=third_party_root/lib
+LIBCXX_FOR_KERNEL_INC_PATH=../third_party_root/include/c++/v1
+LIBCXX_FOR_KERNEL_LIB_PATH=../third_party_root/lib
 
 CFLAGS_KERNEL= \
 			   -target x86_64-unknown-none-elf \
@@ -55,7 +55,7 @@ CXXFLAGS_KERNEL= \
 				 -nostdlibinc \
 				 -D__ELF__ -D_LDBL_EQ_DBL \
 				 -I$(LIBCXX_FOR_KERNEL_INC_PATH) \
-				 -Ithird_party_root/include/ \
+				 -I../third_party_root/include/ \
 				 -I$(CLANG_SYSTEM_INC_PATH) \
 				 $(CLANG_WARNINGS) \
 				 -Wno-gnu-include-next \
@@ -64,7 +64,7 @@ CXXFLAGS_KERNEL= \
 
 LDFLAGS_KERNEL= \
 				-L$(LIBCXX_FOR_KERNEL_LIB_PATH) -lc++ -lc++abi -lm \
-				-Lthird_party_root/lib -lc \
+				-L../third_party_root/lib -lc \
 				-static # --verbose
 
 CXXFLAGS_FOR_TEST= \
