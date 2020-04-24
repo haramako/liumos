@@ -284,6 +284,8 @@ extern "C" void KernelEntry(LiumOS* liumos_passed) {
   XHCI::Controller::GetInstance().Init();
   #endif
 
+  PutString("HOGE\n");
+  
   TextBox console_text_box;
   while (1) {
     ConsoleCommand::WaitAndProcess(console_text_box);

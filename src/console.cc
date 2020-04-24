@@ -51,11 +51,10 @@ void Console::PutChar(char c) {
 #ifndef LIUMOS_LOADER
 
 uint16_t Console::GetCharWithoutBlocking() {
-	#if 0
   while (1) {
     uint16_t keyid;
-    if ((keyid = liumos->keyboard_ctrl->ReadKeyID()) ||
-        (keyid = XHCI::Controller::GetInstance().ReadKeyboardInput())) {
+    if ((keyid = liumos->keyboard_ctrl->ReadKeyID()) /*||
+        (keyid = XHCI::Controller::GetInstance().ReadKeyboardInput())*/) {
       if (!keyid && keyid & KeyID::kMaskBreak)
         continue;
       if (keyid == KeyID::kEnter) {
@@ -77,7 +76,6 @@ uint16_t Console::GetCharWithoutBlocking() {
     }
     return keyid;
   }
-  #endif
   return KeyID::kNoInput;
 }
 
