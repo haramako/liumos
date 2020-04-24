@@ -47,7 +47,7 @@ app/% : .FORCE
 
 files : $(APPS) src/LIUMOS.ELF .FORCE
 	mkdir -p mnt/
-	-rm -r mnt/*
+	-rm -rf mnt/*
 	cp -a efi/* mnt
 	cp dist/* mnt/
 	cp $(APPS) mnt/
