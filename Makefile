@@ -45,11 +45,10 @@ pmem.img :
 app/% : .FORCE
 	make -C $(dir $@)
 
-files : src/BOOTX64.EFI $(APPS) src/LIUMOS.ELF .FORCE
+files : $(APPS) src/LIUMOS.ELF .FORCE
 	mkdir -p mnt/
 	-rm -r mnt/*
-	mkdir -p mnt/EFI/BOOT
-	cp src/BOOTX64.EFI mnt/EFI/BOOT/
+	cp -a efi/* mnt
 	cp dist/* mnt/
 	cp $(APPS) mnt/
 	cp src/LIUMOS.ELF mnt/LIUMOS.ELF

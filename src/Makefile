@@ -1,4 +1,4 @@
-default: BOOTX64.EFI LIUMOS.ELF
+default: LIUMOS.ELF
 
 include ../common.mk
 
@@ -14,11 +14,6 @@ COMMON_SRCS= \
 			 text_box.cc \
 			 font.gen.cc \
 
-LOADER_SRCS= $(COMMON_SRCS) \
-			 efimain.cc \
-			 efi_file_manager.cc \
-			 libfunc.cc loader.cc
-
 KERNEL_SRCS= $(COMMON_SRCS) \
 			 command.cc \
 			 hpet.cc \
@@ -30,8 +25,6 @@ KERNEL_SRCS= $(COMMON_SRCS) \
 			 sleep_handler.S syscall.cc syscall_handler.S \
 			 xhci.cc
 
-LOADER_OBJS= $(addsuffix .o, $(basename $(LOADER_SRCS)))
-LOADER_DEPS= $(addsuffix .o.d, $(basename $(LOADER_SRCS)))
 KERNEL_OBJS= $(addsuffix .elf.o, $(basename $(KERNEL_SRCS)))
 KERNEL_DEPS= $(addsuffix .elf.d, $(basename $(KERNEL_SRCS)))
 OVMF=ovmf/bios64.bin
@@ -46,23 +39,6 @@ CXX_STD = -std=c++17
 
 LIBCXX_FOR_KERNEL_INC_PATH=third_party_root/include/c++/v1
 LIBCXX_FOR_KERNEL_LIB_PATH=third_party_root/lib
-
-CFLAGS_LOADER= \
-			   -target x86_64-pc-win32-coff \
-			   -fno-stack-protector -fno-exceptions -fshort-wchar \
-			   -mno-red-zone \
-			   -nostdlibinc \
-			   $(CLANG_WARNINGS) $(C_STD) \
-			   -Ithird_party_root/include
-
-CXXFLAGS_LOADER= \
-				 -DLIUMOS_LOADER \
-				 -target x86_64-pc-win32-coff \
-				 -fno-stack-protector -fno-exceptions -fshort-wchar \
-				 -mno-red-zone \
-				 -nostdlibinc -nostdlib \
-				 -D_LIBCPP_HAS_NO_THREADS -D_LIBCPP_OBJECT_FORMAT_COFF -Ithird_party_root/include \
-				 $(CLANG_WARNINGS) $(CXX_STD)
 
 CFLAGS_KERNEL= \
 			   -target x86_64-unknown-none-elf \
@@ -115,37 +91,6 @@ test_% : %_test.cc Makefile
 test_sheet : sheet_test.cc sheet.cc Makefile
 	$(CXX) $(CXXFLAGS_FOR_TEST) -o sheet_test.bin sheet_test.cc sheet.cc asm.S
 	@./sheet_test.bin
-
-# Loader rules
-
-%.o : %.c Makefile
-	$(LLVM_CC) $(CFLAGS_LOADER) \
-		-c -o $*.o $*.c
-%.o.d : %.c Makefile
-	@$(LLVM_CC) $(CXXFLAGS_LOADER) -MD -MF $@ -c -o $*.o $*.c >/dev/null 2>&1
-	@echo 'DEP $@'
-
-%.o : %.cc Makefile
-	$(LLVM_CXX) $(CXXFLAGS_LOADER) \
-		-c -o $*.o $*.cc
-%.o.d : %.cc Makefile
-	@$(LLVM_CXX) $(CXXFLAGS_LOADER) -MD -MF $@ -c -o $*.o $*.cc >/dev/null 2>&1
-	@echo 'DEP $@'
-
-%.o : %.S Makefile
-	$(LLVM_CC) $(CFLAGS_LOADER) \
-		-c -o $*.o $*.S
-%.o.d : %.S Makefile
-	@touch $@ # generate dummy
-	@echo 'DEP $@'
-
-%.o.dump.txt : %.o Makefile
-	objdump -d $*.o > $@
-
-BOOTX64.EFI : $(LOADER_OBJS) Makefile
-	$(LLVM_LLD_LINK) \
-		-subsystem:efi_application -nodefaultlib \
-		-entry:efi_main $(LOADER_OBJS) -out:BOOTX64.EFI
 
 # Kernel rules
 
@@ -243,5 +188,4 @@ FORCE :
 githash.cc: FORCE
 	./update_githash_cc.sh
 
--include $(LOADER_DEPS)
 -include $(KERNEL_DEPS)
