@@ -7,7 +7,7 @@
 #include "corefunc.h"
 #include "liumos.h"
 #include "pci.h"
-#include "xhci.h"
+//#include "xhci.h"
 
 LiumOS* liumos;
 
@@ -25,6 +25,7 @@ SerialPort com2_;
 HPET hpet_;
 
 void InitPMEMManagement() {
+	#if 0
   using namespace ACPI;
   if (!liumos->acpi.nfit) {
     PutString("NFIT not found. There are no PMEMs on this system.\n");
@@ -54,6 +55,7 @@ void InitPMEMManagement() {
             spa_range->system_physical_address_range_base);
   }
   PutStringAndHex("Available PMEM (KiB)", available_pmem_size >> 10);
+  #endif
 }
 
 void InitializeVRAMForKernel() {
@@ -147,7 +149,9 @@ __attribute__((ms_abi)) extern "C" void SleepHandler(uint64_t,
 }
 
 void TimerHandler(uint64_t, InterruptInfo* info) {
+	#if 0
   liumos->bsp_local_apic->SendEndOfInterrupt();
+  #endif
   SleepHandler(0, info);
 }
 
@@ -171,9 +175,13 @@ extern "C" void KernelEntry(LiumOS* liumos_passed) {
   liumos->kernel_heap_allocator = &kernel_heap_allocator;
 
   Disable8259PIC();
+  #if 0
   bsp_local_apic_.Init();
+  #endif
 
+  #if 0
   InitIOAPIC(bsp_local_apic_.GetID());
+  #endif
 
   hpet_.Init(static_cast<HPET::RegisterSpace*>(
       liumos->acpi.hpet->base_address.address));
@@ -199,7 +207,9 @@ extern "C" void KernelEntry(LiumOS* liumos_passed) {
 
   liumos->main_console->SetSerial(&com2_);
 
+  #if 0
   bsp_local_apic_.Init();
+  #endif
 
   ProcessController proc_ctrl_(kernel_heap_allocator);
   liumos->proc_ctrl = &proc_ctrl_;
@@ -270,7 +280,9 @@ extern "C" void KernelEntry(LiumOS* liumos_passed) {
 
   EnableSyscall();
 
+  #if 0
   XHCI::Controller::GetInstance().Init();
+  #endif
 
   TextBox console_text_box;
   while (1) {

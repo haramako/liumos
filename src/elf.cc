@@ -1,7 +1,9 @@
 #include <elf.h>
 
 #include "liumos.h"
+#if 0
 #include "pmem.h"
+#endif
 
 struct PhdrInfo {
   const uint8_t* data;
@@ -198,8 +200,10 @@ Process& LoadELFAndCreateEphemeralProcess(EFIFile& file) {
   return proc;
 }
 
+#if 0
 Process& LoadELFAndCreatePersistentProcess(EFIFile& file,
                                            PersistentMemoryManager& pmem) {
+
   constexpr uint64_t kUserStackBaseAddr = 0xBEEF0000;
   const int kNumOfStackPages = 32;
   PersistentProcessInfo& pp_info = *pmem.AllocPersistentProcessInfo();
@@ -247,7 +251,9 @@ Process& LoadELFAndCreatePersistentProcess(EFIFile& file,
 
   return liumos->proc_ctrl->RestoreFromPersistentProcessInfo(pp_info);
 }
+#endif
 
+#if 0
 void LoadKernelELF(EFIFile& file) {
   ProcessMappingInfo map_info;
   PhdrMappingInfo phdr_map_info;
@@ -288,3 +294,4 @@ void LoadKernelELF(EFIFile& file) {
 
   JumpToKernel(entry_point, liumos, kernel_main_stack_pointer);
 }
+#endif

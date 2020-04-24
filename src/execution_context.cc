@@ -1,5 +1,7 @@
 #include "liumos.h"
+#if 0
 #include "pmem.h"
+#endif
 
 void SegmentMapping::Print() {
   PutString("vaddr:");
@@ -11,10 +13,12 @@ void SegmentMapping::Print() {
   PutChar('\n');
 }
 
+#if 0
 void SegmentMapping::AllocSegmentFromPersistentMemory(
     PersistentMemoryManager& pmem) {
   SetPhysAddr(pmem.AllocPages<uint64_t>(ByteSizeToPageSize(GetMapSize())));
 }
+#endif
 
 void SegmentMapping::CopyDataFrom(SegmentMapping& from,
                                   uint64_t& stat_copied_bytes) {

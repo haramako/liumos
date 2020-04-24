@@ -5,8 +5,10 @@
 
 #include "liumos.h"
 #include "pci.h"
+#if 0
 #include "pmem.h"
 #include "xhci.h"
+#endif
 
 namespace ConsoleCommand {
 
@@ -40,11 +42,15 @@ static void ShowNFIT_PrintMemoryMappingAttr(uint64_t attr) {
 static void ShowNFIT_PrintMemoryTypeGUID(ACPI::NFIT::SPARange* spa) {
   GUID* type_guid = reinterpret_cast<GUID*>(&spa->address_range_type_guid);
   PutString("  type:");
+	#if 0
   if (IsEqualGUID(type_guid,
                   &ACPI::NFIT::SPARange::kByteAdressablePersistentMemory))
     PutString(" ByteAddressablePersistentMemory");
   else if (IsEqualGUID(type_guid, &ACPI::NFIT::SPARange::kNVDIMMControlRegion))
     PutString(" NVDIMMControlRegion");
+  #else
+  if(0);
+	#endif
   else
     PutGUID(type_guid);
   PutChar('\n');
@@ -631,6 +637,7 @@ void Run(TextBox& tbox) {
       PutStringAndHex("  proximity_domain",
                       liumos->acpi.srat->GetProximityDomainForLocalAPIC(
                           *liumos->bsp_local_apic));
+	#if 0
   } else if (IsEqualString(line, "pmem show")) {
     for (int i = 0; i < LiumOS::kNumOfPMEMManagers; i++) {
       if (!liumos->pmem[i])
@@ -685,6 +692,7 @@ void Run(TextBox& tbox) {
     Process& proc = LoadELFAndCreatePersistentProcess(
         *liumos->loader_info.files.hello_bin, *liumos->pmem[0]);
     liumos->scheduler->LaunchAndWaitUntilExit(proc);
+	#endif
   } else if (strncmp(line, "test mem ", 9) == 0) {
     int proximity_domain = atoi(&line[9]);
     TestMem(liumos->dram_allocator, proximity_domain);
@@ -724,6 +732,7 @@ void Run(TextBox& tbox) {
       ns_sum_ephemeral += liumos->scheduler->LaunchAndWaitUntilExit(proc);
     }
 
+	#if 0
     PutString("Persistent Process:\n");
     uint64_t ns_sum_persistent = 0;
     for (int i = 0; i < kNumOfTestRun; i++) {
@@ -731,6 +740,7 @@ void Run(TextBox& tbox) {
           *liumos->loader_info.files.pi_bin, *liumos->pmem[0]);
       ns_sum_persistent += liumos->scheduler->LaunchAndWaitUntilExit(proc);
     }
+	#endif
     PutString("timeslice(us), ephemeral avg(ns), persistent avg(ns)\n");
     PutString("0x");
     PutHex64(us);
@@ -739,7 +749,9 @@ void Run(TextBox& tbox) {
     PutHex64(ns_sum_ephemeral / kNumOfTestRun);
     PutString(",");
     PutString("0x");
+	#if 0
     PutHex64(ns_sum_persistent / kNumOfTestRun);
+	#endif
     PutString("\n");
   } else if (IsEqualString(line, "cpuid")) {
     assert(liumos->cpu_features);
@@ -777,6 +789,7 @@ void Run(TextBox& tbox) {
     for (int i = 0; liumos->hpet->ReadMainCounterValue() < t1; i++) {
       PutStringAndHex("Line", i + 1);
     }
+	#if 0
   } else if (IsEqualString(line, "xhci init")) {
     XHCI::Controller::GetInstance().Init();
   } else if (IsEqualString(line, "xhci show portsc")) {
@@ -785,6 +798,7 @@ void Run(TextBox& tbox) {
     XHCI::Controller::GetInstance().PrintUSBSTS();
   } else if (IsEqualString(line, "lsusb")) {
     XHCI::Controller::GetInstance().PrintUSBDevices();
+	#endif
   } else if (IsEqualString(line, "teststl")) {
     char s[128];
     snprintf(s, sizeof(s), "123 = 0x%X\n", 123);
@@ -829,8 +843,10 @@ void Run(TextBox& tbox) {
       PutChar(i);
     }
     PutChar('\n');
+	#if 0
   } else if (IsEqualString(line, "logo")) {
     DrawPPMFile(*liumos->loader_info.files.liumos_ppm, 0, 0);
+	#endif
   } else if (IsEqualString(line, "ud2")) {
     __asm__ volatile("ud2;");
   } else {
@@ -847,8 +863,10 @@ void WaitAndProcess(TextBox& tbox) {
     uint16_t keyid;
     while ((keyid = liumos->main_console->GetCharWithoutBlocking()) ==
            KeyID::kNoInput) {
+		#if 0
       XHCI::Controller::GetInstance().PollEvents();
       StoreIntFlagAndHalt();
+	  #endif
     }
     if (keyid == '\n') {
       tbox.StopRecording();

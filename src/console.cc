@@ -1,8 +1,7 @@
 #include "corefunc.h"
 #include "liumos.h"
-
 #ifndef LIUMOS_LOADER
-#include "xhci.h"
+//#include "xhci.h"
 #endif
 
 void Console::PutChar(char c) {
@@ -52,6 +51,7 @@ void Console::PutChar(char c) {
 #ifndef LIUMOS_LOADER
 
 uint16_t Console::GetCharWithoutBlocking() {
+	#if 0
   while (1) {
     uint16_t keyid;
     if ((keyid = liumos->keyboard_ctrl->ReadKeyID()) ||
@@ -77,6 +77,7 @@ uint16_t Console::GetCharWithoutBlocking() {
     }
     return keyid;
   }
+  #endif
   return KeyID::kNoInput;
 }
 

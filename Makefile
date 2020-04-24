@@ -17,7 +17,7 @@ QEMU_ARGS=\
 
 
 QEMU_ARGS_PMEM=\
-					 $(QEMU_ARGS) 
+                                        $(QEMU_ARGS) 
 
 VNC_PASSWORD=a
 PORT_MONITOR=1240

@@ -10,8 +10,10 @@
 #include "phys_page_allocator.h"
 #include "sys_constant.h"
 
+#if 0
 #ifndef LIUMOS_TEST
 #include "pmem.h"
+#endif
 #endif
 
 constexpr uint64_t kAddrCannotTranslate =

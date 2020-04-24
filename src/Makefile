@@ -3,12 +3,12 @@ default: LIUMOS.ELF
 include ../common.mk
 
 COMMON_SRCS= \
-			 acpi.cc apic.cc asm.S inthandler.S \
+			 asm.S inthandler.S \
 			 console.cc \
 			 efi.cc elf.cc execution_context.cc \
-			 gdt.cc generic.cc githash.cc graphics.cc guid.cc \
+			 gdt.cc generic.cc githash.cc guid.cc \
 			 interrupt.cc \
-			 paging.cc phys_page_allocator.cc pmem.cc process.cc \
+			 paging.cc phys_page_allocator.cc process.cc \
 			 serial.cc sheet.cc sheet_painter.cc \
 			 sys_constant.cc \
 			 text_box.cc \
@@ -22,8 +22,7 @@ KERNEL_SRCS= $(COMMON_SRCS) \
 			 newlib_support.cc \
 			 pci.cc \
 			 scheduler.cc subtask.cc \
-			 sleep_handler.S syscall.cc syscall_handler.S \
-			 xhci.cc
+			 sleep_handler.S syscall.cc syscall_handler.S
 
 KERNEL_OBJS= $(addsuffix .elf.o, $(basename $(KERNEL_SRCS)))
 KERNEL_DEPS= $(addsuffix .elf.d, $(basename $(KERNEL_SRCS)))

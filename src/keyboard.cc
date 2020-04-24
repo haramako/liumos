@@ -80,7 +80,9 @@ void KeyboardController::Init() {
 
 void KeyboardController::IntHandlerSub(uint64_t, InterruptInfo*) {
   keycode_buffer_.Push(ReadIOPort8(kIOPortKeyboardData));
+  #if 0
   liumos->bsp_local_apic->SendEndOfInterrupt();
+  #endif
 }
 
 uint16_t KeyboardController::ParseKeyCode(uint8_t keycode) {
